@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from "axios";
 import { Toast } from 'primereact/toast';
 import { useNavigate } from "react-router-dom";
-
+import axiosWC from '../utils'
 function Login() {
   const navigate = useNavigate();
 
@@ -38,32 +38,32 @@ function Login() {
     toast.current.show({ severity, summary: message });
   };
 
-  // Handle form submission
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Make a POST request to the login API
-    axios.post("http://localhost:3000/api/login", formData)
+   const response =  axiosWC.post('http://127.0.0.1:3000/api/login', formData)
       .then((response) => {
         const data = response.data;
-        localStorage.setItem("token", data.token);
 
-        if (data.message === "Login successful") {
-          showToastMessage("Login successful", "success");
+        if (data.message === 'Login successful') {
+          showToastMessage('Login successful', 'success');
+          const token = data.token;
+
+          // Set the token in the axios headers for future requests
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
           // Redirect to the user page after a successful login
-          navigate("/user");
+          navigate('/user');
         } else {
-          // Handle login failure, show an error message, etc.
-          console.log("Login failed");
+          console.log('Login failed');
         }
       })
       .catch((error) => {
-        showToastMessage("Login failed. Incorrect email or password.", "error");
+        showToastMessage('Login failed. Incorrect email or password.', 'error');
         console.error(error);
       });
   };
-
   // Render the login form and the Toast component
   return (
     <div className='register'>

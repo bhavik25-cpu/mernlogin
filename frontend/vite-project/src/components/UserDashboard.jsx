@@ -2,17 +2,14 @@
 
 // Import necessary components
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosWC from '../utils'
+
 
 function UserDashboard() {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    let tokenheader = localStorage.getItem("token")
-    console.log(tokenheader, "tokenheadertokenheader")
-    axios.get("http://localhost:3000/api/user", {
-      "headers": { "token": tokenheader }
-    })
+    const response = axiosWC.get("http://127.0.0.1:3000/api/user")
       .then((response) => {
         setUserName(response.data.user.name);
       })
@@ -20,6 +17,11 @@ function UserDashboard() {
         console.error(error);
       });
   }, []);
+
+  
+  useEffect(()=>{
+    fetch('http://127.0.0.1:3000/api/is-login',{credentials: 'include'}).then(res=>console.log('Is login',res))
+  })
 
   return (
     <div className="user-dashboard">

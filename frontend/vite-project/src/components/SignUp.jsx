@@ -1,6 +1,7 @@
 import React, { useState,useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosWC from '../utils'
+
 import { Toast } from 'primereact/toast';
 
 function Register() {
@@ -58,7 +59,7 @@ function Register() {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/api/signup", {
+      const res = await axiosWC.post("http://127.0.0.1:3000/api/signup", {
         name: formData.name,
         email: formData.email,
         password: formData.password,

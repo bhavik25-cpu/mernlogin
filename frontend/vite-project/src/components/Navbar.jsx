@@ -1,25 +1,27 @@
 import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { Link, useLocation } from 'react-router-dom';
-import axios from "axios";
+import axiosWC from '../utils'
+
 
 function Navbar() {
   const location = useLocation();
 
-  // Determine whether to show the "Logout" button based on the current route
-  const showLogoutButton = location.pathname === '/user'; // Show the Logout button only on the '/user' route
+  const showLogoutButton = location.pathname === '/user';
 
-  // Function to handle the logout button click
   const handleLogout = async () => {
-    localStorage.clear(); // Clear the localStorage to log the user out
-    axios.get("http://localhost:3000/api/logout", {
-    });
+    try {
+      await axiosWC.post("http://127.0.0.1:3000/api/logout");
+      console.log("Logout successful");
+    } catch (error) {
+      console.log("Logout error");
+    }
   }
-
+  
   return (
     <div className="container">
       <Menubar className="menu" start={
-        showLogoutButton ? ( // Show only the "Logout" button if the user is on the '/user' route
+        showLogoutButton ? ( 
           <div className="right-logout">
             <Link to="/login">
               <button className="p-link" onClick={handleLogout}>

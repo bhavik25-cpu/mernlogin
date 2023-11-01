@@ -54,59 +54,36 @@ const login = async (req, res, next) => {
     return res.status(500).json({ message: "Login failed" });
   }
 
-  // Extract user input (email and password) from the request body.
-  // Try to find a user with the provided email.
-
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
   
-  // If no user with the provided email is found, return a 401 response (Unauthorized).
-
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  // Compare the provided password with the stored hashed password.
-  // If they don't match, return a 401 response.
-
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "35s",
+    expiresIn: "1d",
   });
+  
   console.log("Generated Token\n", token);
 
-  // If the credentials are valid, create a JSON Web Token (JWT) containing the user's ID.
-  // The token is signed with a secret key and set to expire in 35 seconds.
-
-  return res.status(200).json({ message: "Login successful", token: token });
-};
-
-const verifyToken = (req, res, next) => {
-  const token = req.headers.token;
-  console.log(token, "tokentokentokentoken");
-
-  if (!token) {
-    res.status(404).json({ message: "No token found" });
-    return;
-  }
-
-  // Extract the JWT from the "token" header in the request.
-
-  jwt.verify(String(token), process.env.JWT_SECRET_KEY, (err, user) => {
-    if (err) {
-       res.status(400).json({ message: "Invalid Token" });
-       return;
-    }
-    console.log(user.id);
-    req.id = user.id;
+  // Set a cookie with the JWT token
+  res.cookie("authToken", token, {
+    httpOnly: false, 
+    maxAge: 60*60*24 * 1000,
+    path:'/',
+    secure: false,
+    sameSite: "lax",
   });
-  next();
+
+
+  return res.status(200).json({ message: "Login successful" , user:user,token});
 };
 
-// Verify the authenticity of the token using the JWT library and the secret key.
-// If the token is invalid, return a 400 response.
+
 
 const getUser = async (req, res, next) => {
   const userId = req.id;
@@ -126,19 +103,27 @@ const getUser = async (req, res, next) => {
   }
 };
 
-// Extract the user ID from the token and attempt to find the user in the database.
-// If the user is found, return the user's data with a 200 response. If not found, return a 404 response.
 
-const logout = (req, res) => {
-  res.redirect("/login");
-};
+// const logout = (req, res) => {
+//   console.log("resresresresresresresresresres")
+//   res.cookie('authToken', '', {    httpOnly: false, 
+//     maxAge: 1,
+//     path:'/',
+//     secure: false,
+//     sameSite: "lax",
+// })
+// };
+const logout = (req, res, next) => {
+  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      res.clearCookie("authToken");
+    console.log(res.clearCookie,"qqqqqqqqqqqqqqqqq")
+    return res.status(200).json({ message: "Successfully Logged Out" });
+  };
 
 module.exports = {
   signup,
   login,
   getUser,
-  verifyToken,
   logout
 };
 
-// Export the functions as part of a module to be used in other parts of your application.
