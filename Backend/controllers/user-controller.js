@@ -104,18 +104,9 @@ const getUser = async (req, res, next) => {
 };
 
 
-// const logout = (req, res) => {
-//   console.log("resresresresresresresresresres")
-//   res.cookie('authToken', '', {    httpOnly: false, 
-//     maxAge: 1,
-//     path:'/',
-//     secure: false,
-//     sameSite: "lax",
-// })
-// };
+
 const logout = (req, res, next) => {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-      res.clearCookie("authToken");
+    res.clearCookie("authToken");
     console.log(res.clearCookie,"qqqqqqqqqqqqqqqqq")
     return res.status(200).json({ message: "Successfully Logged Out" });
   };
