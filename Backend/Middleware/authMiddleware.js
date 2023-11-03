@@ -18,4 +18,13 @@ console.log(token,"verifyTokenverifyTokenverifyTokenverifyToken")
   });
 };
 
-module.exports = { verifyToken };
+
+const isLoggedIn = (req, res, next) => {
+  console.log(req.id,"newidsssssssssssssssss")
+  if (req.id) {
+    return res.status(200).json({ message: 'User is logged in' });
+  } else {
+    return res.status(401).json({ message: 'User is not logged in' });
+  }
+};
+module.exports = { verifyToken,isLoggedIn };

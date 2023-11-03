@@ -15,6 +15,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: 4,
+    validate: {
+      validator: function (value) {
+        return /^(?=.*[A-Za-z])(?=.*\d).+$/.test(value);
+      },
+      message: 'Password must contain both alphabetic and numeric characters.',
+    },
   },
 });
 

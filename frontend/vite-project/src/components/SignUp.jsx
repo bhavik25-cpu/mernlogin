@@ -1,20 +1,17 @@
-import React, { useState,useRef } from 'react';
-import { useNavigate } from "react-router-dom";
-import axiosWC from '../utils'
-
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosWC from '../utils';
 import { Toast } from 'primereact/toast';
 
 function Register() {
   const history = useNavigate();
+  const toast = useRef(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
   });
-
-  const [toastMessage, setToastMessage] = useState(null);
-
-  const toast = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,20 +48,19 @@ function Register() {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)/;
     return passwordRegex.test(password);
   };
-  
+
   const showToastMessage = (message, severity) => {
-    setToastMessage({ message, severity });
     toast.current.show({ severity, summary: message });
   };
 
   const sendRequest = async () => {
     try {
-      const res = await axiosWC.post("http://127.0.0.1:3000/api/signup", {
+      const res = await axiosWC.post('http://127.0.0.1:3000/api/signup', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
       });
-  
+
       const data = res.data;
       return data;
     } catch (error) {
@@ -73,7 +69,6 @@ function Register() {
       throw error; // Re-throw the error for further handling if needed
     }
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,13 +77,13 @@ function Register() {
       sendRequest()
         .then(() => {
           showToastMessage('Registration successful', 'success');
-          history("/login");
+          history('/login');
         });
     }
   };
 
   return (
-    <div className='register'>
+    <div className="register">
       <h2>Register Page</h2>
       <form onSubmit={handleSubmit}>
         <div>

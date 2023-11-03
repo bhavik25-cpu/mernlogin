@@ -119,6 +119,17 @@ button:focus-visible {
   width: 100%;
 }
 
+
+.Login {
+  text-align: center;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 300px;
+  top: 5;
+  margin-left: 190%;
+  width: 100%;
+}
+
 /* Style the form element */
 form {
   display: flex;

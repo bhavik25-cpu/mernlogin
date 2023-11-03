@@ -1,12 +1,10 @@
 import React from 'react';
 import { Menubar } from 'primereact/menubar';
 import { Link, useLocation } from 'react-router-dom';
-import axiosWC from '../utils'
-
+import axiosWC from '../utils';
 
 function Navbar() {
   const location = useLocation();
-
   const showLogoutButton = location.pathname === '/user';
 
   const handleLogout = async () => {
@@ -14,14 +12,15 @@ function Navbar() {
       await axiosWC.post("http://127.0.0.1:3000/api/logout");
       console.log("Logout successful");
     } catch (error) {
-      console.log("Logout error");
+      console.error("Logout error:", error);
     }
   }
-  
+
   return (
     <div className="container">
       <Menubar className="menu" start={
-        showLogoutButton ? ( 
+        showLogoutButton ? (
+          // Show "Logout" button if the user is on the '/user' route
           <div className="right-logout">
             <Link to="/login">
               <button className="p-link" onClick={handleLogout}>
@@ -31,8 +30,8 @@ function Navbar() {
             </Link>
           </div>
         ) : (
+          // Show "Register" and "Login" buttons if the user is not on the '/user' route
           <>
-            {/* Show "Register" and "Login" buttons if the user is not on the '/user' route */}
             <Link to="/register">
               <button className="p-link">
                 <span className="pi pi-user-plus"></span>
