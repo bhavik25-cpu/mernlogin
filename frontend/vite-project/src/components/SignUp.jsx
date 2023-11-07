@@ -64,9 +64,8 @@ function Register() {
       const data = res.data;
       return data;
     } catch (error) {
-      // Handle registration failure here
       showToastMessage('Registration failed. Email already exists.', 'error');
-      throw error; // Re-throw the error for further handling if needed
+      throw error;
     }
   };
 

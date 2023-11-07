@@ -20,7 +20,6 @@ function Navbar() {
     <div className="container">
       <Menubar className="menu" start={
         showLogoutButton ? (
-          // Show "Logout" button if the user is on the '/user' route
           <div className="right-logout">
             <Link to="/login">
               <button className="p-link" onClick={handleLogout}>
@@ -30,7 +29,6 @@ function Navbar() {
             </Link>
           </div>
         ) : (
-          // Show "Register" and "Login" buttons if the user is not on the '/user' route
           <>
             <Link to="/register">
               <button className="p-link">

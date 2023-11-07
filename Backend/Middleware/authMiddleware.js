@@ -27,4 +27,8 @@ const isLoggedIn = (req, res, next) => {
     return res.status(401).json({ message: 'User is not logged in' });
   }
 };
-module.exports = { verifyToken,isLoggedIn };
+
+module.exports = { 
+  verifyToken,
+  isLoggedIn 
+};
