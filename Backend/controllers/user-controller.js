@@ -90,7 +90,7 @@ const getUser = async (req, res, next) => {
   console.log(req.id, "iddddddddddddddd");
   let user;
   try {
-    user = await User.findById(userId, "-password");
+    user = await User.findById(userId);
     if (!user) {
       res.status(404).json({ message: "User Not Found" });
       return;
